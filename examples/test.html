@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pagination</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="../lib/umd/index.js"></script>
+  <link rel="stylesheet" href="../lib/css/index.css">
+  <style>
+  body {
+    color: #999;
+  }
+
+  div {
+    margin: 40px 0 20px;
+  }
+
+  .prev {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-left: 1px solid #666;
+    border-top: 1px solid #666;
+    margin: 0 -5px 2px 0;
+    transform: rotate(-45deg);
+  }
+
+  .next {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-right: 1px solid #666;
+    border-bottom: 1px solid #666;
+    margin: 0 0 2px -5px;
+    transform: rotate(-45deg);
+  }
+  </style>
+</head>
+<body>
+<div id="module"></div>
+
+<script>
+new Vue({
+  el: '#module',
+  template: '<div>' +
+  '<div>请打开控制台查看打印结果</div>' +
+  '<div>—— 知道总页数 ——</div>' +
+  '<pagination :config="config" @to="log(\'config\',$event)" :input="{enable:false}"></pagination>' +
+  '<div>—— 不知道总页数 ——</div>' +
+  '<pagination :noPage="true" :config="noPageConfig" @to="log(\'noPageConfig\',$event)" :turnBtns="turnBtns" :input="{text: \'转到\', debonceTime: 2000}"></pagination>' +
+  '</div>',
+  data: function () {
+    return {
+      config: {
+        pages: 100,
+        page: 1,
+        pageSize: 10,
+        maxPageBtn: 7
+      },
+      noPageConfig: {
+        page: 1,
+        pageSize: 10,
+        currPageSize: 10,
+      },
+      turnBtns: {
+        prev: '<span class="prev"></span>',
+        next: '<span class="next"></span>'
+      },
+    }
+  },
+  methods: {
+    log(type, val) {
+      console.log(type, 'to: ', val)
+      this[type].page = val
+    }
+  },
+  components: { pagination: Pagination }
+})
+</script>
+</body>
+</html>
