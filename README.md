@@ -1,7 +1,7 @@
 # @livelybone/vue-pagination
 [![NPM Version](http://img.shields.io/npm/v/@livelybone/vue-pagination.svg?style=flat-square)](https://www.npmjs.com/package/@livelybone/vue-pagination)
 [![Download Month](http://img.shields.io/npm/dm/@livelybone/vue-pagination.svg?style=flat-square)](https://www.npmjs.com/package/@livelybone/vue-pagination)
-![gzip with dependencies: kb](https://img.shields.io/badge/gzip--with--dependencies-kb-brightgreen.svg "gzip with dependencies: kb")
+![gzip with dependencies: 1.3kb](https://img.shields.io/badge/gzip--with--dependencies-1.3kb-brightgreen.svg "gzip with dependencies: 1.3kb")
 ![pkg.module](https://img.shields.io/badge/pkg.module-supported-blue.svg "pkg.module")
 
 > `pkg.module supported`, which means that you can apply tree-shaking in you project
