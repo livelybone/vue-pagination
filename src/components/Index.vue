@@ -1,5 +1,6 @@
 <template>
-  <div v-if="myConfig.pages>1||noPage" class="pagination">
+  <div v-if="myConfig.pages>1||(noPage&&myConfig.pageSize<=myConfig.currPageSize)"
+       class="pagination">
     <template v-if="inputConfig.enable">
       <span class="label">{{inputConfig.text}}</span>
       <input class="input" type="text" v-model="inputVal">
