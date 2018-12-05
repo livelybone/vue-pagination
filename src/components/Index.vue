@@ -89,12 +89,13 @@ export default {
   watch: {
     'myConfig.page': {
       handler(val) {
-        this.inputVal = val
+        this.inputVal = +val
       },
       immediate: true,
     },
     inputVal(val) {
-      if (val !== this.myConfig.page) this.debonce(val)
+      const v = +val
+      if (v !== +this.myConfig.page) this.debonce(v)
     },
   },
   methods: {
@@ -105,7 +106,7 @@ export default {
       if (page <= pages || (this.noPage && currPageSize >= pageSize)) {
         this.$emit('to', page)
       } else {
-        page = pages
+        this.myConfig.page = pages
       }
       return null
     },
@@ -125,8 +126,8 @@ export default {
     debonce(val) {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
-        const { pages, currPageSize, pageSize } = this.myConfig
-        if (+val > 0 && (this.noPage ? currPageSize >= pageSize : +val <= pages)) {
+        const { page, pages, currPageSize, pageSize } = this.myConfig
+        if (val > 0 && (this.noPage ? currPageSize >= pageSize || val <= +page : val <= pages)) {
           this.to(val)
         }
       }, this.inputConfig.debonceTime)
