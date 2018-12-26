@@ -12,7 +12,7 @@ A vue pagination component
 https://github.com/livelybone/vue-pagination.git
 
 ## Demo
-http://livelybone.github.io/@livelybone/vue-pagination/
+https://livelybone.github.io/vue/vue-pagination/
 
 ## Installation
 ```bash
