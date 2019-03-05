@@ -69,8 +69,17 @@ new Vue({
       },
     }
   },
+  watch: {
+    'noPageConfig.page': function (val) {
+      if (val > 3) {
+        this.noPageConfig.currPageSize = 3
+      }else{
+        this.noPageConfig.currPageSize
+      }
+    },
+  },
   methods: {
-    log(type, val) {
+    log: function (type, val) {
       console.log(type, 'to: ', val)
       this[type].page = val
     }

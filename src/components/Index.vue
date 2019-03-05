@@ -1,52 +1,54 @@
 <template>
-  <div v-if="myConfig.pages>1
-  ||(noPage&&(myConfig.page>1||(myConfig.pageSize<=myConfig.currPageSize)))"
+  <div v-if="show"
        class="pagination">
     <template v-if="inputConfig.enable">
       <span class="label">{{inputConfig.text}}</span>
       <input class="input" type="text" v-model="inputVal">
     </template>
-    <div class="page-btn" v-html="_turnBtns.prev" :class="{disabled: myConfig.page<=1}"
+    <div class="page-btn"
+         v-html="_turnBtns.prev"
+         :class="{disabled: disabled.pre}"
          @click="prev">
     </div>
     <template v-if="!noPage">
-      <div class="page-btn" v-for="(val,i) in pagesArr" :key="i"
+      <div class="page-btn"
+           v-for="(val,i) in pagesArr" :key="i"
            :class="{active:myConfig.page===val,disabled:!Number(val)}"
            @click="to(val)">{{val}}
       </div>
     </template>
-    <div class="page-btn" v-html="_turnBtns.next"
-         :class="{disabled: noPage
-                  ?myConfig.pageSize>myConfig.currPageSize:myConfig.page>=myConfig.pages}"
+    <div class="page-btn"
+         v-html="_turnBtns.next"
+         :class="{disabled: disabled.next}"
          @click="next">
     </div>
   </div>
 </template>
 
 <script>
-const configDefault = {
+const configDefault = Object.freeze({
   pages: 1,
   page: 1,
   pageSize: 10,
   maxPageBtn: 7,
-}
+})
 
-const noPageConfig = {
+const noPageConfig = Object.freeze({
   page: 1,
   pageSize: 10,
   currPageSize: 10,
-}
+})
 
-const inputDefault = {
+const inputDefault = Object.freeze({
   enable: true,
   text: 'Go to',
   debonceTime: 500,
-}
+})
 
-const turnBtns = {
+const turnBtns = Object.freeze({
   prev: '<',
   next: '>',
-}
+})
 
 export default {
   name: 'Pagination',
@@ -85,6 +87,20 @@ export default {
       }
       return [1, '...'].concat([...Array(maxPageBtn - 4)].map((val, i) => page - Math.floor((maxPageBtn - 3) / 2) + i + 1)).concat(['...', pages])
     },
+    disabled() {
+      return {
+        pre: this.myConfig.page <= 1,
+        next: this.noPage
+          ? this.myConfig.pageSize > this.myConfig.currPageSize
+          : this.myConfig.page >= this.myConfig.pages,
+      }
+    },
+    show() {
+      return this.myConfig.pages > 1 ||
+        !(this.noPage &&
+          (this.myConfig.page <= 1 &&
+            (this.myConfig.pageSize > this.myConfig.currPageSize)))
+    },
   },
   watch: {
     'myConfig.page': {
@@ -100,23 +116,15 @@ export default {
   },
   methods: {
     next() {
-      let { page } = this.myConfig
-      const { currPageSize, pageSize, pages } = this.myConfig
-      page = +page + 1
-      if (page <= pages || (this.noPage && currPageSize >= pageSize)) {
+      const page = +this.myConfig.page + 1
+      if (!this.disabled.next) {
         this.$emit('to', page)
-      } else {
-        this.myConfig.page = pages
       }
-      return null
     },
     prev() {
-      let { page } = this.myConfig
-      page = +page - 1
-      if (page > 0) {
+      const page = +this.myConfig.page - 1
+      if (!this.disabled.pre) {
         this.$emit('to', page)
-      } else {
-        page = 1
       }
     },
     to(val) {
