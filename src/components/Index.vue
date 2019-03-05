@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show"
+  <div v-if="!hide"
        class="pagination">
     <template v-if="inputConfig.enable">
       <span class="label">{{inputConfig.text}}</span>
@@ -95,11 +95,10 @@ export default {
           : this.myConfig.page >= this.myConfig.pages,
       }
     },
-    show() {
-      return this.myConfig.pages > 1 ||
-        !(this.noPage &&
-          (this.myConfig.page <= 1 &&
-            (this.myConfig.pageSize > this.myConfig.currPageSize)))
+    hide() {
+      return (!this.noPage && this.myConfig.pages <= 1) ||
+        (this.noPage && (this.myConfig.page <= 1 &&
+          (this.myConfig.pageSize > this.myConfig.currPageSize)))
     },
   },
   watch: {
